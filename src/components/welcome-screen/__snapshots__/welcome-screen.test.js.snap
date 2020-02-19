@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should WelcomeScreen render correctly 1`] = `
+exports[`Should render WelcomeScreen correctly 1`] = `
 <section
   className="welcome"
 >
@@ -16,6 +16,7 @@ exports[`Should WelcomeScreen render correctly 1`] = `
   </div>
   <button
     className="welcome__button"
+    onClick={[Function]}
   >
     <span
       className="visually-hidden"
@@ -41,7 +42,7 @@ exports[`Should WelcomeScreen render correctly 1`] = `
     </li>
     <li>
       Можно допустить 
-      3
+      5
        ошибки.
     </li>
   </ul>

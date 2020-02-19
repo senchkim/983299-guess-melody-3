@@ -1,11 +1,15 @@
-import React, {PureComponent} from "react";
-import propTypes from "prop-types";
-import {Switch, Route, BrowserRouter} from "react-router-dom";
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
+import GameScreen from '../game-screen/game-screen.jsx';
+import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen.jsx';
+import GenreQuestionScreen from '../genre-question-screen/genre-question-screen.jsx';
+import withAudioPlayer from '../../hocs/with-audio-player/with-audio-player.jsx';
+import {GameType} from '../../const';
 
-import WelcomeScreen from "../welcome-screen/welcome-screen.jsx";
-import ArtistQuestionScreen from "../artist-question-screen/artist-question-screen.jsx";
-import GenreQuestionScreen from "../genre-question-screen/genre-question-screen.jsx";
-import {GameType} from "../../const.js";
+const ArtistQuestionScreenWrapped = withAudioPlayer(ArtistQuestionScreen);
+const GenreQuestionScreenWrapped = withAudioPlayer(GenreQuestionScreen);
 
 class App extends PureComponent {
   constructor(props) {
@@ -17,18 +21,16 @@ class App extends PureComponent {
   }
 
   _renderGameScreen() {
-    const {errorsAmount, questions} = this.props;
+    const {errorsCount, questions} = this.props;
     const {step} = this.state;
     const question = questions[step];
 
     if (step === -1 || step >= questions.length) {
       return (
         <WelcomeScreen
-          errorsAmount={errorsAmount}
+          errorsCount={errorsCount}
           onWelcomeButtonClick={() => {
-            this.setState({
-              step: 0,
-            });
+            this.setState({step: 0});
           }}
         />
       );
@@ -38,25 +40,29 @@ class App extends PureComponent {
       switch (question.type) {
         case GameType.ARTIST:
           return (
-            <ArtistQuestionScreen
-              question={question}
-              onAnswer={() => {
-                this.setState((prevState) => ({
-                  step: prevState.step + 1,
-                }));
-              }}
-            />
+            <GameScreen type={question.type}>
+              <ArtistQuestionScreenWrapped
+                question={question}
+                onAnswer={() => {
+                  this.setState((prevStep) => ({
+                    step: prevStep.step + 1,
+                  }));
+                }}
+              />
+            </GameScreen>
           );
         case GameType.GENRE:
           return (
-            <GenreQuestionScreen
-              question={question}
-              onAnswer={() => {
-                this.setState((prevState) => ({
-                  step: prevState.step + 1,
-                }));
-              }}
-            />
+            <GameScreen type={question.type}>
+              <GenreQuestionScreenWrapped
+                question={question}
+                onAnswer={() => {
+                  this.setState((prevStep) => ({
+                    step: prevStep.step + 1,
+                  }));
+                }}
+              />
+            </GameScreen>
           );
       }
     }
@@ -74,13 +80,13 @@ class App extends PureComponent {
             {this._renderGameScreen()}
           </Route>
           <Route exact path="/artist">
-            <ArtistQuestionScreen
+            <ArtistQuestionScreenWrapped
               question={questions[1]}
               onAnswer={() => {}}
             />
           </Route>
           <Route exact path="/genre">
-            <GenreQuestionScreen
+            <GenreQuestionScreenWrapped
               question={questions[0]}
               onAnswer={() => {}}
             />
@@ -92,8 +98,8 @@ class App extends PureComponent {
 }
 
 App.propTypes = {
-  errorsAmount: propTypes.number.isRequired,
-  questions: propTypes.array.isRequired,
+  errorsCount: PropTypes.number.isRequired,
+  questions: PropTypes.array.isRequired,
 };
 
 export default App;

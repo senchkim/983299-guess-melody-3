@@ -1,14 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./components/app/app.jsx";
-import questions from "./mocks/questions.js";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/app/app.jsx';
+import questions from './mocks/questions';
 
-const errorsAmount = 3;
+const ERROR_COUNT = 3;
 
-ReactDOM.render(
-    <App
-      errorsAmount={errorsAmount}
-      questions={questions}
-    />,
-    document.getElementById(`root`)
-);
+const init = () => {
+  ReactDOM.render(
+      <App errorsCount={ERROR_COUNT} questions={questions} />,
+      document.querySelector(`#root`)
+  );
+};
+
+init();
