@@ -76,5 +76,7 @@ it(`User answer passed to callback is consistent with "userAnswer" prop`, () => 
   expect(onAnswer.mock.calls[0][0]).toMatchObject(question);
   expect(onAnswer.mock.calls[0][1]).toMatchObject(userAnswer);
 
-  expect(genreQuestion.find(`input`).map((it) => it.prop(`checked`))).toEqual(userAnswer);
+  expect(genreQuestion.find(`input`).map((it) => it.prop(`checked`))).toEqual(
+      userAnswer
+  );
 });

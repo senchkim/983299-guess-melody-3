@@ -19,7 +19,7 @@ it(`Should welcome button be pressed`, () => {
 
   const welcomeButton = welcomeScreen.find(`button.welcome__button`);
 
-  welcomeButton.simulate(`click`);
+  welcomeButton.props().onClick();
 
   expect(handleWelcomeButtonClick.mock.calls.length).toBe(1);
 });
